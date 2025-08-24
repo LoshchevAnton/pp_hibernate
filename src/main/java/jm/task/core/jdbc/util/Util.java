@@ -15,6 +15,7 @@ import java.util.Properties;
 
 public class Util {
     // реализуйте настройку соеденения с БД
+    private static SessionFactory sessionFactory;
     private static final String URL = "jdbc:mysql://localhost:3306/Users";
     private static final String USER = "user";
     private static final String PASSWORD = "mA6796g";
@@ -28,7 +29,9 @@ public class Util {
     }
 
     public static SessionFactory getSessionFactory() {
-        SessionFactory sessionFactory = null;
+        if (sessionFactory != null) {
+            return sessionFactory;
+        }
         try {
             Configuration configuration = new Configuration();
             Properties settings = new Properties();
@@ -44,9 +47,9 @@ public class Util {
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(settings).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+            return sessionFactory;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return sessionFactory;
     }
 }
